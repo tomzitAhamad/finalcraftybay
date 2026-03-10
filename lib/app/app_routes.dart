@@ -1,3 +1,4 @@
+import 'package:finalcrafty/features/auth/presentations/screens/sign_up_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -5,9 +6,12 @@ class AppRoutes {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings){
     Widget widget=SizedBox();
     switch(settings.name){
-      case '/':
+      case SplashScreen.name:
         widget=SplashScreen();
         break;
+      case SignUpScreen.name:
+        widget=SignUpScreen();
+
     }
     return MaterialPageRoute(builder: (context)=> widget);
   }
