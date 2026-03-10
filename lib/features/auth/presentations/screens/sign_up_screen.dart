@@ -1,9 +1,9 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
-  static const String name='/sing-up-screen';
+  static const String name='/sign-up';
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
