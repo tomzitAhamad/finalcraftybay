@@ -42,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     style: context.textTheme.titleLarge,
                   ),
                   Text(
-                    'Get started with your details',
+                    'Get started with your detail',
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: Colors.grey,
                     ),
