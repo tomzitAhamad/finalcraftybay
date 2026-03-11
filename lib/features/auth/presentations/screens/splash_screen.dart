@@ -1,4 +1,6 @@
 
+
+import 'package:finalcrafty/features/auth/presentations/screens/password_otp_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/app_logo.dart';
@@ -24,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _navigateToNextScreen()async{
     await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacementNamed(context, SignUpScreen.name);
+    Navigator.pushReplacementNamed(context, PasswordOtpScreen.name);
   }
   @override
   Widget build(BuildContext context) {

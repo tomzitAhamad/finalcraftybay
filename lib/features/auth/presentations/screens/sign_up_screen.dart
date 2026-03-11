@@ -106,13 +106,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _onTapSignUpButton() {}
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     _emailTeController.dispose();
     _firstNameTeController.dispose();
     _lastNameTeController.dispose();
     _phoneNumberTeController.dispose();
     _cityTeController.dispose();
     _passwordTeController.dispose();
+    super.dispose();
   }
 }

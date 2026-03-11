@@ -5,11 +5,17 @@ class Validators {
     }
     return null;
   }
-  static String ? validateEmail(String ? value,String message){
-    final emailRegExp=RegExp(r'^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
-    if(value==null || value.isEmpty && !emailRegExp.hasMatch(value)){
+  static String? validateEmail(String? value, String message) {
+    final emailRegExp = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+
+    if (value == null || value.isEmpty) {
       return message;
     }
+
+    if (!emailRegExp.hasMatch(value)) {
+      return 'Enter a valid email';
+    }
+
     return null;
   }
   static String ? validatePassword(String ? value){

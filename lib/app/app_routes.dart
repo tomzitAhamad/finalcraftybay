@@ -1,3 +1,4 @@
+import 'package:finalcrafty/features/auth/presentations/screens/password_otp_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/sign_up_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,9 @@ class AppRoutes {
         break;
       case SignUpScreen.name:
         widget=SignUpScreen();
+
+      case PasswordOtpScreen.name:
+        widget =PasswordOtpScreen();
 
     }
     return MaterialPageRoute(builder: (context)=> widget);
