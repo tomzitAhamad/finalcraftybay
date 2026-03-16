@@ -1,7 +1,9 @@
 
 import 'package:finalcrafty/app/app_colors.dart';
+import 'package:finalcrafty/features/catagory/presentation/screens/category_list_screen.dart';
 import 'package:finalcrafty/features/home/presentation/screens/home_screen.dart';
 import 'package:finalcrafty/features/shared/presentation/providers/main_nav_provider.dart';
+import 'package:finalcrafty/features/wishlist/presentation/screens/wish_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +18,9 @@ class MainNavHolderScreen extends StatefulWidget {
 class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
   List<Widget> _screens=[
     HomeScreen(),
+    CategoryListScreen(),
     SizedBox(),
-    SizedBox(),
-    SizedBox(),
+    WishListScreen(),
   ];
 
   @override
