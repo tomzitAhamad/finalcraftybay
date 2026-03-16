@@ -7,4 +7,12 @@ class MainNavProvider extends ChangeNotifier{
     _selectedIndex=index;
     notifyListeners();
   }
+  void moveToCategory(){
+    changeIndex(1);
+    notifyListeners();
+  }
+  void backToHome(){
+    changeIndex(0);
+    notifyListeners();
+  }
 }
