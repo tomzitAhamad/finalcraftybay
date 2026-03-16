@@ -3,10 +3,12 @@ import 'package:finalcrafty/app/app_routes.dart';
 import 'package:finalcrafty/app/app_theme.dart';
 import 'package:finalcrafty/app/provider/language_provider.dart';
 import 'package:finalcrafty/app/provider/theme_provider.dart';
+import 'package:finalcrafty/features/shared/presentation/providers/main_nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+import '../features/auth/presentations/providers/otp_timer_provider.dart';
 import '../l10n/app_localizations.dart';
 
 class CraftyBay extends StatelessWidget {
@@ -18,7 +20,9 @@ class CraftyBay extends StatelessWidget {
 
       providers: [
         ChangeNotifierProvider(create: (context)=> LanguageProvider()),
-        ChangeNotifierProvider(create: (context)=>ThemeProvider())
+        ChangeNotifierProvider(create: (context)=>ThemeProvider()),
+        ChangeNotifierProvider(create: (context)=>OtpTimerProvider()),
+        ChangeNotifierProvider(create: (context)=>MainNavProvider())
       ],
       child: Consumer2<LanguageProvider,ThemeProvider>(
         builder: (context,languageProvider,themeProvider,child) {
