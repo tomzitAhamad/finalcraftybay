@@ -31,6 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
+                  SizedBox(height: 48),
                   AppLogo(),
                   SizedBox(height: 24),
                   Text(
