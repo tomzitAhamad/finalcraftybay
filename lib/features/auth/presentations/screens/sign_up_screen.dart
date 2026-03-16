@@ -1,3 +1,4 @@
+import 'package:finalcrafty/features/auth/presentations/screens/password_otp_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app/extension/utils_extension.dart';
@@ -35,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
+                  SizedBox(height: 24),
                   AppLogo(),
                   SizedBox(height: 24),
                   Text(
@@ -94,6 +96,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onPressed: _onTapSignUpButton,
                     child: Text('Sign Up'),
                   ),
+                  SizedBox(height: 8,),
+                  TextButton(onPressed: _onTapSignInButton, child: Text('Already have an account? Sign In'))
                 ],
               ),
             ),
@@ -103,7 +107,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void _onTapSignUpButton() {}
+  void _onTapSignUpButton() {
+    Navigator.pushNamed(context, PasswordOtpScreen.name);
+  }
+  void _onTapSignInButton() {
+    Navigator.pop(context);
+  }
   @override
   void dispose() {
     _emailTeController.dispose();
