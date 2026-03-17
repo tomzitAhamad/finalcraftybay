@@ -2,6 +2,7 @@ import 'package:finalcrafty/features/auth/presentations/screens/password_otp_scr
 import 'package:finalcrafty/features/auth/presentations/screens/sign_in_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/sign_up_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/splash_screen.dart';
+import 'package:finalcrafty/features/products/presentation/screens/product_details_screen.dart';
 import 'package:finalcrafty/features/products/presentation/screens/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,9 @@ class AppRoutes {
       case ProductListScreen.name:
         final categoryName=settings.arguments as String;
         widget=ProductListScreen(categoryName: categoryName);
+        break;
+      case ProductDetailsScreen.name:
+        widget=ProductDetailsScreen();
         break;
 
     }
