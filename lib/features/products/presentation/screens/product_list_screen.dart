@@ -1,6 +1,7 @@
 
-import 'package:finalcrafty/features/shared/widgets/product_card.dart';
 import 'package:flutter/material.dart';
+
+import '../../../shared/widgets/product_card.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key, required this.categoryName});
