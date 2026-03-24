@@ -46,19 +46,19 @@ class AppTheme {
       ),
       hintStyle: TextStyle(color: Colors.grey),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: AppColors.themeColor),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: AppColors.themeColor),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: AppColors.themeColor),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: Colors.red),
       ),
     );
