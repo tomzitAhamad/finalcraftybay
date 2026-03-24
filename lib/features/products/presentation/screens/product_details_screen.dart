@@ -1,4 +1,5 @@
 
+import 'package:finalcrafty/features/reviews/presentation/screens/reviews_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app/app_colors.dart';
@@ -84,7 +85,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                             children: [
                               ProductRating(rating: '4.7',),
-                              TextButton(onPressed: (){}, child: Text('Reviews',style: TextStyle(
+                              TextButton(onPressed: (){
+                                Navigator.pushNamed(context, ReviewsScreen.name);
+
+                              }, child: Text('Reviews',style: TextStyle(
                                 color: AppColors.themeColor
                               ),)),
                               ProductFavoriteButton()
