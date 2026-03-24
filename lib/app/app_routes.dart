@@ -4,6 +4,8 @@ import 'package:finalcrafty/features/auth/presentations/screens/sign_up_screen.d
 import 'package:finalcrafty/features/auth/presentations/screens/splash_screen.dart';
 import 'package:finalcrafty/features/products/presentation/screens/product_details_screen.dart';
 import 'package:finalcrafty/features/products/presentation/screens/product_list_screen.dart';
+import 'package:finalcrafty/features/reviews/presentation/screens/create_review.dart';
+import 'package:finalcrafty/features/reviews/presentation/screens/reviews_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../features/shared/presentation/screens/main_nav_holder_screen.dart';
@@ -33,6 +35,12 @@ class AppRoutes {
         break;
       case ProductDetailsScreen.name:
         widget=ProductDetailsScreen();
+        break;
+      case ReviewsScreen.name:
+        widget=ReviewsScreen();
+        break;
+      case CreateReview.name:
+        widget=CreateReview();
         break;
 
     }
