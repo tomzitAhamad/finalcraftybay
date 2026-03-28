@@ -1,5 +1,6 @@
 
 import 'package:finalcrafty/app/app_colors.dart';
+import 'package:finalcrafty/features/cart/presentation/screens/cart_screen.dart';
 import 'package:finalcrafty/features/catagory/presentation/screens/category_list_screen.dart';
 import 'package:finalcrafty/features/home/presentation/screens/home_screen.dart';
 import 'package:finalcrafty/features/shared/presentation/providers/main_nav_provider.dart';
@@ -19,7 +20,7 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
   List<Widget> _screens=[
     HomeScreen(),
     CategoryListScreen(),
-    SizedBox(),
+    CartScreen(),
     WishListScreen(),
   ];
 
