@@ -1,4 +1,5 @@
 
+import 'package:finalcrafty/features/auth/presentations/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../shared/presentation/screens/main_nav_holder_screen.dart';
 import '../widgets/app_logo.dart';
@@ -23,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _navigateToNextScreen()async{
     await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacementNamed(context, MainNavHolderScreen.name);
+    Navigator.pushReplacementNamed(context, SignUpScreen.name);
   }
   @override
   Widget build(BuildContext context) {

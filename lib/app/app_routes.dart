@@ -1,4 +1,4 @@
-import 'package:finalcrafty/features/auth/presentations/screens/password_otp_screen.dart';
+import 'package:finalcrafty/features/auth/presentations/screens/verify_otp_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/sign_in_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/sign_up_screen.dart';
 import 'package:finalcrafty/features/auth/presentations/screens/splash_screen.dart';
@@ -20,8 +20,9 @@ class AppRoutes {
       case SignUpScreen.name:
         widget=SignUpScreen();
         break;
-      case PasswordOtpScreen.name:
-        widget =PasswordOtpScreen();
+      case VerifyOtpScreen.name:
+        final email=settings.arguments as String;
+        widget =VerifyOtpScreen(email: email,);
         break;
       case SignInScreen.name:
         widget=SignInScreen();

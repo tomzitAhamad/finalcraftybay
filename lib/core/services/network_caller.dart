@@ -1,111 +1,120 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
+
 part '../models/network_response.dart';
 
 class NetworkCaller {
-  final Map<String,String> headers;
-  final VoidCallback unAuthorized;
-  final Logger _logger=Logger();
-  NetworkCaller({required this.headers, required this.unAuthorized});
+  final Logger _logger = Logger();
+
+  final Map<String, String>  headers;
+  final VoidCallback onUnauthorize;
+
+  NetworkCaller({required this.headers, required this.onUnauthorize});
+
   Future<NetworkResponse> getRequest(String url) async {
     try {
       Uri uri = Uri.parse(url);
-      logRequest(url);
-      Response response = await get(
-        uri,
-        headers:headers,
-      );
-      logResponse(url, response);
-      final decodedBody = jsonDecode(response.body);
+
+      _logRequest(url);
+      Response response = await get(uri, headers: headers);
+      _logResponse(url, response);
+
+      final decodedData = jsonDecode(response.body);
+
       if (response.statusCode == 200) {
         return NetworkResponse(
-          isSuccessed: true,
+          isSuccess: true,
           responseCode: response.statusCode,
-          body: decodedBody,
+          body: decodedData,
         );
       } else if (response.statusCode == 401) {
-        unAuthorized();
+        onUnauthorize();
         return NetworkResponse(
-          isSuccessed: false,
+          isSuccess: false,
           responseCode: response.statusCode,
-          errorMassage: 'Unauthorized',
+          errorMassage: 'Un-authorize',
         );
       } else {
         return NetworkResponse(
-          isSuccessed: false,
+          isSuccess: false,
           responseCode: response.statusCode,
+          errorMassage:
+          decodedData['msg'], // TODO: Decouple this data variable
         );
       }
     } catch (e) {
       return NetworkResponse(
-        isSuccessed: false,
+        isSuccess: false,
         responseCode: -1,
         errorMassage: e.toString(),
       );
     }
   }
 
-   Future<NetworkResponse> postRequest(
+  Future<NetworkResponse> postRequest(
       String url, {
         Map<String, dynamic>? body,
+        bool isFromLogin = false,
       }) async {
     try {
       Uri uri = Uri.parse(url);
-      logRequest(url, body: body);
+
+      _logRequest(url, body: body);
       Response response = await post(
         uri,
         headers: headers,
         body: jsonEncode(body),
       );
-      logResponse(url, response);
-      final decodedBody = jsonDecode(response.body);
-      if (response.statusCode == 200) {
+      _logResponse(url, response);
+
+      final decodedData = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return NetworkResponse(
-          isSuccessed: true,
+          isSuccess: true,
           responseCode: response.statusCode,
-          body: decodedBody,
+          body: decodedData,
         );
       } else if (response.statusCode == 401) {
-        unAuthorized();
+        if (!isFromLogin) {
+          onUnauthorize();
+        }
         return NetworkResponse(
-          isSuccessed: false,
+          isSuccess: false,
           responseCode: response.statusCode,
-          errorMassage: 'Unauthorized',
+          errorMassage: 'Un-authorize',
         );
       } else {
         return NetworkResponse(
-          isSuccessed: false,
+          isSuccess: false,
           responseCode: response.statusCode,
-          errorMassage: decodedBody['data'],
+          errorMassage: decodedData['msg'],
         );
       }
     } catch (e) {
       return NetworkResponse(
-        isSuccessed: false,
+        isSuccess: false,
         responseCode: -1,
         errorMassage: e.toString(),
       );
     }
   }
 
-
-
-  void logRequest(String url, {Map<String, dynamic>? body}) {
+  void _logRequest(String url, {Map<String, dynamic>? body}) {
     _logger.i(
-      'Url:$url\n'
-          'Body:$body',
+      'URL: $url\n'
+          'Body: $body',
     );
   }
 
-   void logResponse(String url, Response response) {
+  void _logResponse(String url, Response response) {
     _logger.i(
-      'Url:$url\n'
-          'Body:${response.body}\n'
-          'Status code:${response.body}',
+      'URL: $url\n'
+          'Status Code: ${response.statusCode}\n'
+          'Body: ${response.body}',
     );
   }
 }
-

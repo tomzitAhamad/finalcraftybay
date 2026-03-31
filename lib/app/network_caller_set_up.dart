@@ -5,10 +5,10 @@ import 'crafty_bay.dart';
 
 
 NetworkCaller getNetworkCaller(){
-  return NetworkCaller(headers: {
-    'token':'sdf',
+  return NetworkCaller(headers:{
+    'token':'token',
     'content-type':'application/json'
-  }, unAuthorized: (){
+  }, onUnauthorize: () {
     _moveToSignInScreen();
   });
 }
