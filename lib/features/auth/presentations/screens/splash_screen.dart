@@ -1,5 +1,4 @@
 import 'package:finalcrafty/app/controllers/auth_controller.dart';
-import 'package:finalcrafty/features/auth/presentations/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../shared/presentation/screens/main_nav_holder_screen.dart';
 import '../widgets/app_logo.dart';
