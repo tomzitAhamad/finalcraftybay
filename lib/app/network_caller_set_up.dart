@@ -6,7 +6,7 @@ import 'crafty_bay.dart';
 
 NetworkCaller getNetworkCaller(){
   return NetworkCaller(headers:{
-    'token':'token',
+    // 'token':'token',
     'content-type':'application/json'
   }, onUnauthorize: () {
     _moveToSignInScreen();

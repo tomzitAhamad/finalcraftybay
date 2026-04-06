@@ -8,6 +8,7 @@ import 'package:finalcrafty/features/reviews/presentation/screens/create_review.
 import 'package:finalcrafty/features/reviews/presentation/screens/reviews_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../features/catagory/data/model/category_model.dart';
 import '../features/shared/presentation/screens/main_nav_holder_screen.dart';
 
 class AppRoutes {
@@ -31,11 +32,12 @@ class AppRoutes {
         widget=MainNavHolderScreen();
         break;
       case ProductListScreen.name:
-        final categoryName=settings.arguments as String;
-        widget=ProductListScreen(categoryName: categoryName);
+        final category = settings.arguments as CategoryModel;
+        widget = ProductListScreen(category: category);
         break;
       case ProductDetailsScreen.name:
-        widget=ProductDetailsScreen();
+        final productId = settings.arguments as String;
+        widget = ProductDetailsScreen(productId: productId);
         break;
       case ReviewsScreen.name:
         widget=ReviewsScreen();

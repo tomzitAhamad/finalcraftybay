@@ -1,110 +1,197 @@
 
-import 'package:finalcrafty/features/reviews/presentation/screens/reviews_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../app/app_colors.dart';
+
 import '../../../../app/extension/utils_extension.dart';
+import '../../../shared/widgets/center_circular_progress.dart';
 import '../../../shared/widgets/inc_dec_button.dart';
 import '../../../shared/widgets/product_favorite_button.dart';
 import '../../../shared/widgets/product_rating.dart';
+import '../../../shared/widgets/show_snackbar_message.dart';
+import '../../data/model/add_to_card_model.dart';
+import '../providers/add_to_card_provider.dart';
+import '../providers/product_details_provider.dart';
 import '../widgets/color_picker.dart';
-import '../widgets/priceAndAddToCardSection.dart';
+
+import '../widgets/price_and_add_to_card_section.dart';
 import '../widgets/product_image_carousel.dart';
 import '../widgets/size_picker.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({super.key});
-  static const String name='product-details';
+  const ProductDetailsScreen({super.key, required this.productId});
+
+  static const String name = '/product-details';
+
+  final String productId;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final ProductDetailsProvider _productDetailsProvider =
+  ProductDetailsProvider();
+  final AddToCartProvider _addToCartProvider = AddToCartProvider();
+
+  int _quantity = 1;
+  String? _selectedColor;
+  String? _selectedSize;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _productDetailsProvider.getProductDetails(widget.productId);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Product Details'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: _productDetailsProvider),
+        ChangeNotifierProvider.value(value: _addToCartProvider),
+      ],
+      child: Scaffold(
+        appBar: AppBar(title: Text('Product details')),
+        body: Consumer<ProductDetailsProvider>(
+          builder: (context, _, _) {
+            if (_productDetailsProvider.getProductDetailsInProgress) {
+              return const CenterCircularProgress();
+            } else if (_productDetailsProvider.errorMessage != null) {
+              return Center(child: Text(_productDetailsProvider.errorMessage!));
+            }
 
-      ),
-      body: Column(
-        children: [
-          Expanded(child: SingleChildScrollView(
-            child: Column(
+            return Column(
               children: [
-                ProductImageCarousel(),Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                      crossAxisAlignment: .start,
-                    children: [
-                      _buildTitleSection(),
-                      ColorPicker(colors: ['Red','Black','White'], onChange: (String color) {  },),
-                      SizedBox(height: 16,),
-                      SizePicker(sizes: ['S','M','L','XL','XXL'], onChange: (String p1) {  },),
-                      SizedBox(height: 16,),
-                      Text('Description',style: context.textTheme.titleMedium,),
-                      SizedBox(height: 16,),
-                      Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
-                          "Lorem Ipsum has been the industry's standard dummy text ever "
-                          "since the 1500s, when an unknown printer took a galley of "
-                          "type and scrambled it to make a type specimen book. It "
-                          "has survived not only five centuries, but also the leap "
-                          "into electronic typesetting, remaining essentially unchanged. "
-                          "It was popularised in the 1960s with the release of Letraset "
-                          "sheets containing Lorem Ipsum passages, and more recently with desktop publishing"
-                          " software like Aldus PageMaker including versions of Lorem Ipsum.",style: context.textTheme.titleSmall?.copyWith(
-                        color: Colors.grey
-                      ),)
-                  
-                  
-                    ],
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ProductImageCarousel(
+                          imageUrls: _productDetailsProvider
+                              .productDetailsModel!
+                              .photos,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              _buildTitleSection(),
+                              if (_productDetailsProvider
+                                  .productDetailsModel!
+                                  .colors
+                                  .isNotEmpty)
+                                ColorPicker(
+                                  colors: _productDetailsProvider
+                                      .productDetailsModel!
+                                      .colors,
+                                  onChange: (String color) {
+                                    _selectedColor = color;
+                                  },
+                                ),
+                              const SizedBox(height: 16),
+                              if (_productDetailsProvider
+                                  .productDetailsModel!
+                                  .sizes
+                                  .isNotEmpty)
+                                SizePicker(
+                                  sizes: _productDetailsProvider
+                                      .productDetailsModel!
+                                      .sizes,
+                                  onChange: (String size) {
+                                    _selectedSize = size;
+                                  },
+                                ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Description',
+                                style: context.textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                _productDetailsProvider
+                                    .productDetailsModel!
+                                    .description,
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )
+                ),
+                PriceAndAddToCartSection(
+                  price: _productDetailsProvider
+                      .productDetailsModel!
+                      .currentPrice
+                      .toDouble(),
+                  onTapAddToCart: () async {
+                    AddToCartModel params = AddToCartModel(
+                      id: _productDetailsProvider.productDetailsModel!.id,
+                      quantity: _quantity,
+                      color: _selectedColor,
+                      size: _selectedSize,
+                    );
+                    final isSuccess = await _addToCartProvider.addToCart(params);
+                    if (isSuccess) {
+                      showSnackBarMessage(context, 'Added to cart');
+                    } else {
+                      showSnackBarMessage(context, _addToCartProvider.errorMessage!);
+                    }
+                  },
+                ),
               ],
-            ),
-          )),
-          PriceAndAddToCardSection(price: 100, onTapAddToCard: () {  },)
-        ],
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget _buildTitleSection() {
     return Row(
-                    spacing: 8,
-                    crossAxisAlignment: .start,
-                    children: [
-                      Expanded(child: Column(
-                        crossAxisAlignment: .start,
-                        children: [
-                          Text('Nike 2026 - New year special edition',style: context.textTheme.titleMedium?.copyWith(
-                            color: Colors.black87
-                          ),),
-                          Row(
-
-                            children: [
-                              ProductRating(rating: '4.7',),
-                              TextButton(onPressed: (){
-                                Navigator.pushNamed(context, ReviewsScreen.name);
-
-                              }, child: Text('Reviews',style: TextStyle(
-                                color: AppColors.themeColor
-                              ),)),
-                              ProductFavoriteButton()
-                            ],
-                          )
-
-                        ],
-                      )),
-                      IncDecButton(onChange: (int value) {  },)
-                    ],
-                  );
+      spacing: 8,
+      crossAxisAlignment: .start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: .start,
+            children: [
+              Text(
+                'Nike 2026 - New Year Special Edition',
+                style: context.textTheme.titleMedium?.copyWith(
+                  color: Colors.black87,
+                ),
+              ),
+              Row(
+                children: [
+                  ProductRating(rating: '4.7'),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Reviews',
+                      style: TextStyle(color: AppColors.themeColor),
+                    ),
+                  ),
+                  ProductFavouriteButton(),
+                ],
+              ),
+            ],
+          ),
+        ),
+        IncDecButton(
+          maxCount:
+          _productDetailsProvider.productDetailsModel!.availableQuantity,
+          onChange: (int count) {
+            _quantity = count;
+          },
+        ),
+      ],
+    );
   }
 }
-
-
-
-
-
-

@@ -3,4 +3,5 @@ class AssetPaths {
   static const String logoSvg='$_imagePath/logo-2.svg';
   static const String navLogoSvg='$_imagePath/logo_nav.svg';
   static const String dummyImagePng='$_imagePath/shoee.jpeg';
+  static const String noImagePng = '$_imagePath/no_image.png';
 }
