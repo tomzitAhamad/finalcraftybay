@@ -3,6 +3,7 @@ import 'package:finalcrafty/app/app_routes.dart';
 import 'package:finalcrafty/app/app_theme.dart';
 import 'package:finalcrafty/app/provider/language_provider.dart';
 import 'package:finalcrafty/app/provider/theme_provider.dart';
+import 'package:finalcrafty/features/catagory/presentation/provider/category_list_provider.dart';
 import 'package:finalcrafty/features/home/presentation/provider/home_slider_provider.dart';
 import 'package:finalcrafty/features/shared/presentation/providers/main_nav_provider.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class CraftyBay extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>OtpTimerProvider()),
         ChangeNotifierProvider(create: (context)=>MainNavProvider()),
         ChangeNotifierProvider(create: (context)=>HomeSliderProvider()),
+        ChangeNotifierProvider(create: (context)=>CategoryListProvider()),
       ],
       child: Consumer2<LanguageProvider,ThemeProvider>(
         builder: (context,languageProvider,themeProvider,child) {

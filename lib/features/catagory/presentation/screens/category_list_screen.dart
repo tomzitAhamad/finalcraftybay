@@ -1,8 +1,13 @@
 
-import 'package:finalcrafty/features/shared/presentation/providers/main_nav_provider.dart';
-import 'package:finalcrafty/features/shared/widgets/category_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../shared/presentation/providers/main_nav_provider.dart';
+import '../../../shared/widgets/category_card.dart';
+import '../../../shared/widgets/center_circular_progress.dart';
+import '../provider/category_list_provider.dart';
+
+
 
 class CategoryListScreen extends StatefulWidget {
   const CategoryListScreen({super.key});
@@ -12,30 +17,80 @@ class CategoryListScreen extends StatefulWidget {
 }
 
 class _CategoryListScreenState extends State<CategoryListScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_loadCategories);
+  }
+
+  void _loadCategories() {
+    if (context.read<CategoryListProvider>().isLoading) {
+      return;
+    }
+
+    if (_scrollController.position.extentBefore < 300) {
+      context.read<CategoryListProvider>().getCategories();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (_,__){
+      onPopInvokedWithResult: (_, __) {
         _onTapBackButton();
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton( onPressed:_onTapBackButton, icon: Icon(Icons.arrow_back_ios),),
-          title: Text('Categories'),),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GridView.builder(
-              itemCount: 40,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,mainAxisSpacing: 18,crossAxisSpacing: 18), itemBuilder: (context,index){
-            return FittedBox(child: CategoryCard());
-          }),
+          leading: IconButton(
+            onPressed: _onTapBackButton,
+            icon: Icon(Icons.arrow_back_ios),
+          ),
+          title: Text('Categories'),
+        ),
+        body: Consumer<CategoryListProvider>(
+          builder: (context, categoryListProvider, _) {
+            if (categoryListProvider.getInitialCategoryListInProgress) {
+              return CenterCircularProgress();
+            }
+
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: GridView.builder(
+                      controller: _scrollController,
+                      itemCount: categoryListProvider.categories.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                      ),
+                      itemBuilder: (context, index) {
+                        return FittedBox(
+                          child: CategoryCard(
+                            categoryModel:
+                            categoryListProvider.categories[index],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  if (categoryListProvider.loadMoreCategoryListInProgress)
+                    CenterCircularProgress(),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
   }
-  void _onTapBackButton(){
+
+  void _onTapBackButton() {
     context.read<MainNavProvider>().backToHome();
   }
 }
-

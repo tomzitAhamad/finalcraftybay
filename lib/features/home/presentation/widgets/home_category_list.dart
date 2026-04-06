@@ -1,21 +1,39 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../catagory/presentation/provider/category_list_provider.dart';
 
 import '../../../shared/widgets/category_card.dart';
 
 class HomeCategoryList extends StatelessWidget {
-  const HomeCategoryList({
-    super.key,
-  });
+  const HomeCategoryList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 95,
-      child: ListView.separated(
-          scrollDirection: .horizontal,
-          itemBuilder: (context,index)=>CategoryCard(),
-          separatorBuilder: (_,__)=>SizedBox(width: 12,),
-          itemCount: 10),
+      height: 110,
+      child: Consumer<CategoryListProvider>(
+        builder: (context, categoryListProvider, _) {
+          if (categoryListProvider.getInitialCategoryListInProgress) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          return ListView.separated(
+            scrollDirection: .horizontal,
+            itemCount: getCategoryListLength(
+              categoryListProvider.categories.length,
+            ),
+            itemBuilder: (context, index) => CategoryCard(
+              categoryModel: categoryListProvider.categories[index],
+            ),
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+          );
+        },
+      ),
     );
+  }
+
+  int getCategoryListLength(int length) {
+    return length > 10 ? 10 : length;
   }
 }

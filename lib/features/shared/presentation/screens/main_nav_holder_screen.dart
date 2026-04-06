@@ -1,6 +1,7 @@
 
 import 'package:finalcrafty/app/app_colors.dart';
 import 'package:finalcrafty/features/cart/presentation/screens/cart_screen.dart';
+import 'package:finalcrafty/features/catagory/presentation/provider/category_list_provider.dart';
 import 'package:finalcrafty/features/catagory/presentation/screens/category_list_screen.dart';
 import 'package:finalcrafty/features/home/presentation/provider/home_slider_provider.dart';
 import 'package:finalcrafty/features/home/presentation/screens/home_screen.dart';
@@ -31,6 +32,7 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp){
       context.read<HomeSliderProvider>().getHomeSliders();
+      context.read<CategoryListProvider>().getCategories();
     });
 
 
