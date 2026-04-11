@@ -10,6 +10,8 @@ import 'package:finalcrafty/features/wishlist/presentation/screens/wish_list_scr
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../auth/presentations/screens/sign_in_screen.dart';
+
 class MainNavHolderScreen extends StatefulWidget {
   const MainNavHolderScreen({super.key});
   static const String name='/main-nav-holder';
@@ -45,7 +47,15 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
         return  Scaffold(
         body: _screens[mainNavProvider.selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
-        onTap: mainNavProvider.changeIndex,
+            onTap: (index) async {
+              if (mainNavProvider.shouldVerifyLoginState(index) &&
+                  !(await mainNavProvider.isAlreadyLoggedIn())) {
+                Navigator.pushNamed(context, SignInScreen.name);
+                return;
+              }
+
+              mainNavProvider.changeIndex(index);
+            },
         currentIndex: mainNavProvider.selectedIndex,
         selectedItemColor: AppColors.themeColor,
         unselectedItemColor: Colors.grey,
