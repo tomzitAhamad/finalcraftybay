@@ -1,21 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../catagory/presentation/provider/category_list_provider.dart';
 
+import '../../../shared/widgets/category_card.dart';
 
-class HorizontalProductListView extends StatelessWidget {
-  const HorizontalProductListView({super.key});
+class HorizentalProductListView extends StatelessWidget {
+  const HorizentalProductListView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 195,
-      child: ListView.builder(
-        scrollDirection: .horizontal,
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          // return ProductCard();
+      height: 110,
+      child: Consumer<CategoryListProvider>(
+        builder: (context, categoryListProvider, _) {
+          if (categoryListProvider.getInitialCategoryListInProgress) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          return ListView.separated(
+            scrollDirection: .horizontal,
+            itemCount: getCategoryListLength(
+              categoryListProvider.categories.length,
+            ),
+            itemBuilder: (context, index) => CategoryCard(
+              categoryModel: categoryListProvider.categories[index],
+            ),
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+          );
         },
       ),
     );
+  }
+
+  int getCategoryListLength(int length) {
+    return length > 10 ? 10 : length;
   }
 }
