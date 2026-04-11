@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../catagory/data/model/category_model.dart';
 import '../../../shared/widgets/center_circular_progress.dart';
 import '../../../shared/widgets/product_card.dart';
+import '../../../wishlist/provider/add_wish_list_provider.dart';
 import '../providers/product_list_provider.dart';
 
 
@@ -45,8 +46,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: _productListProvider,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: _productListProvider),
+        ChangeNotifierProvider(create: (_) => AddWishListProvider()),
+      ],
       child: Scaffold(
         appBar: AppBar(title: Text(widget.category.title)),
         body: Consumer<ProductListProvider>(

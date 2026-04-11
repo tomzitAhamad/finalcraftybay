@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../features/auth/presentations/providers/otp_timer_provider.dart';
+import '../features/wishlist/provider/wish_list_provider.dart';
 import '../l10n/app_localizations.dart';
 
 class CraftyBay extends StatelessWidget {
@@ -27,6 +28,7 @@ class CraftyBay extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>OtpTimerProvider()),
         ChangeNotifierProvider(create: (context)=>MainNavProvider()),
         ChangeNotifierProvider(create: (context)=>HomeSliderProvider()),
+        ChangeNotifierProvider(create: (_) => WishListProvider()),
         ChangeNotifierProvider(create: (context)=>CategoryListProvider()),
       ],
       child: Consumer2<LanguageProvider,ThemeProvider>(

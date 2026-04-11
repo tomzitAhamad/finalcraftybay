@@ -39,9 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
               HomeCategoryList(),
               SectionHeader(name: 'Popular', onTapSeeAll: context.read<MainNavProvider>().moveToCategory,),
               HorizentalProductListView(),
-              SectionHeader(name: 'Special', onTapSeeAll: () {  },),
+              SectionHeader(name: 'Special', onTapSeeAll: context.read<MainNavProvider>().moveToCategory,),
               HorizentalProductListView(),
-              SectionHeader(name: 'New', onTapSeeAll: () {  },),
+              SectionHeader(name: 'New', onTapSeeAll: context.read<MainNavProvider>().moveToCategory,),
               HorizentalProductListView(),
         
             ],
